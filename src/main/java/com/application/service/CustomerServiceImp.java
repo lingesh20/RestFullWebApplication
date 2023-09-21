@@ -3,6 +3,7 @@ package com.application.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,32 @@ public class CustomerServiceImp implements CustomerService{
 		return bean;
 	}
 	
+
+	public CustomerBean getCustomerById(int customerId) {
+		CustomerBean customer = null;
+		CustomerEntity customerEntity = customerRepository.findById(customerId).get();
+		if(customerEntity!=null) {
+			customer = new CustomerBean();
+			BeanUtils.copyProperties(customerEntity, customer);
+		}
+		return customer;
+	}
+	
+	public CustomerBean updateCustomerdetail(CustomerBean customerBean) {
+		CustomerEntity customerEntity = convertBeanToEntity(customerBean);
+		CustomerEntity updateEntity = customerRepository.save(customerEntity);
+		CustomerBean bean = convertEntityToBean(updateEntity);
+		return bean;
+	}
+
+	public CustomerBean deleteCustomerdetail(CustomerBean bean) {
+		// TODO Auto-generated method stub
+		CustomerEntity customerEntity = convertBeanToEntity(bean);
+		customerRepository.delete(customerEntity);
+		CustomerBean customerBean = convertEntityToBean(customerEntity);
+		return customerBean;
+	}
+
 	private CustomerBean convertEntityToBean(CustomerEntity addEntity) {
 		// TODO Auto-generated method stub
 		CustomerBean custBean = new CustomerBean();
@@ -53,6 +80,11 @@ public class CustomerServiceImp implements CustomerService{
 		
 	}
 
+	
+
+	
+
+	
 	
 	
 	
